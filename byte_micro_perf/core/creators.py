@@ -4,11 +4,11 @@ import importlib
 import traceback
 
 sys.path.insert(
-    0, 
+    0,
     str(pathlib.Path(__file__).absolute().parents[1])
 )
 
-def create_backend_instance(backend_type: str):    
+def create_backend_instance(backend_type: str):
     backend_module = importlib.import_module(
         "backends." + backend_type + ".backend_" + backend_type.lower())
     backend_cls = getattr(backend_module, "Backend" + backend_type)
@@ -88,6 +88,7 @@ OP_INFO_MAPPING = {
     # llm: MOE
     "moe_gating_gemm": {"test_mode": "single"},
     "moe_softmax_topk": {"test_mode": "single"},
+    "moe_softmax_topk_triton": {"test_mode": "single"},
     "moe_scatter_dynamic_quant": {"test_mode": "single"},
     "moe_quant_matmul": {"test_mode": "single"},
     "moe_quant_group_gemm": {"test_mode": "single"},
@@ -102,20 +103,20 @@ OP_INFO_MAPPING = {
     "store_paged_kv_cache": {"test_mode": "single"},
     "flash_attention": {"test_mode": "single"},
     "flash_attention_session_cache": {"test_mode": "single"},
-    "flash_decoding": {"test_mode": "single"}, 
+    "flash_decoding": {"test_mode": "single"},
 
 
 
-    "moe_dispatch_tokens": {"test_mode": "concurrent"}, 
+    "moe_dispatch_tokens": {"test_mode": "concurrent"},
 
     # gemm ops
     "quant_matmul": {"test_mode": "single"},
-    
+
 }
 
 
 def get_op_info(
-    backend_type: str, 
+    backend_type: str,
     op_type: str
 ):
     if op_type in OP_INFO_MAPPING:
@@ -133,11 +134,11 @@ def get_op_info(
 
 
 def create_op_instance(
-    op_cls, args_dict, backend_instance, 
+    op_cls, args_dict, backend_instance,
     op_group=None, group_size=1
 ):
     op_instance = op_cls(
-        args_dict, backend_instance, 
+        args_dict, backend_instance,
         op_group=op_group, group_size=group_size
     )
     return op_instance
