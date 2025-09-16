@@ -94,7 +94,7 @@ OP_INFO_MAPPING = {
     "moe_quant_group_gemm": {"test_mode": "single"},
     "moe_swiglu_dynamic_quant": {"test_mode": "single"},
     "moe_gather": {"test_mode": "single"},
-
+    "moe_gather_triton": {"test_mode": "single"},
 
     # llm: ATTN
     "head_rms_norm": {"test_mode": "single"},
